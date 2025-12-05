@@ -19,7 +19,7 @@ By integrating PL/SQL logic, the system helps to reduce equipment downtime, prev
 
 >To generate maintenance history reports efficiently.
 
-# 3. Database Schema (Proposed Tables)
+# 3. Database Schema
 
 1. EQUIPMENT
 
