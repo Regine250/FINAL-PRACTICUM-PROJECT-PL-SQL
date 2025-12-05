@@ -277,3 +277,135 @@ BEGIN
     );
 END;
 /
+
+1. Testing Procedures
+## Test add_equipment
+-- Enable DBMS_OUTPUT
+SET SERVEROUTPUT ON;
+
+-- Insert new equipment
+BEGIN
+    add_equipment(101, 'Excavator', 'Heavy', 'Active');
+    add_equipment(102, 'Bulldozer', 'Heavy', 'Active');
+END;
+/
+
+Test update_equipment_status
+-- Update equipment status
+BEGIN
+    update_equipment_status(101, 'Maintenance');  -- should trigger audit
+    update_equipment_status(999, 'Retired');      -- no equipment, tests ELSE
+END;
+/
+
+2. Testing Functions
+Test count_active_equipment
+SET SERVEROUTPUT ON;
+
+DECLARE
+    v_active_count NUMBER;
+BEGIN
+    v_active_count := count_active_equipment;
+    DBMS_OUTPUT.PUT_LINE('Active Equipment Count: ' || v_active_count);
+END;
+/
+
+## Test get_operator_name
+SET SERVEROUTPUT ON;
+
+DECLARE
+    v_operator_name VARCHAR2(100);
+BEGIN
+    v_operator_name := get_operator_name(101);  -- assuming operator assigned to equipment 101
+    DBMS_OUTPUT.PUT_LINE('Operator Name: ' || v_operator_name);
+
+    -- Test with no operator assigned
+    BEGIN
+        v_operator_name := get_operator_name(102);
+        DBMS_OUTPUT.PUT_LINE('Operator Name: ' || v_operator_name);
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE('No operator assigned to equipment 102');
+    END;
+END;
+/
+
+3. Testing Cursors
+## Test equipment cursor
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_equipment IS
+        SELECT equipment_id, name, type, status
+        FROM equipment;
+    v_id     equipment.equipment_id%TYPE;
+    v_name   equipment.name%TYPE;
+    v_type   equipment.type%TYPE;
+    v_status equipment.status%TYPE;
+BEGIN
+    OPEN c_equipment;
+    LOOP
+        FETCH c_equipment INTO v_id, v_name, v_type, v_status;
+        EXIT WHEN c_equipment%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('ID: ' || v_id || ' | Name: ' || v_name || ' | Type: ' || v_type || ' | Status: ' || v_status);
+    END LOOP;
+    CLOSE c_equipment;
+END;
+/
+
+##Test repair cursor
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_repairs IS
+        SELECT repair_id, repair_date, issue_reported, action_taken
+        FROM repair_history
+        WHERE equipment_id = 101;
+
+    v_id     repair_history.repair_id%TYPE;
+    v_date   repair_history.repair_date%TYPE;
+    v_issue  repair_history.issue_reported%TYPE;
+    v_action repair_history.action_taken%TYPE;
+BEGIN
+    OPEN c_repairs;
+    LOOP
+        FETCH c_repairs INTO v_id, v_date, v_issue, v_action;
+        EXIT WHEN c_repairs%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('Repair: ' || v_id || ' | Date: ' || v_date || ' | Issue: ' || v_issue || ' | Action: ' || v_action);
+    END LOOP;
+    CLOSE c_repairs;
+END;
+/
+
+4. Testing Package mining_pkg
+Test total_repairs function
+SET SERVEROUTPUT ON;
+
+DECLARE
+    v_total NUMBER;
+BEGIN
+    v_total := mining_pkg.total_repairs(101);
+    DBMS_OUTPUT.PUT_LINE('Total Repairs for Equipment 101: ' || v_total);
+END;
+/
+
+Test equipment_report procedure
+SET SERVEROUTPUT ON;
+
+BEGIN
+    mining_pkg.equipment_report(101);  -- Display full equipment + operator + repairs
+END;
+/
+
+5. Testing Trigger audit_equipment_status
+
+After updating equipment status, check the equipment_audit table:
+
+-- Update status to trigger audit
+BEGIN
+    update_equipment_status(101, 'Active');
+END;
+/
+
+-- View audit log
+SELECT * FROM equipment_audit WHERE equipment_id = 101;
