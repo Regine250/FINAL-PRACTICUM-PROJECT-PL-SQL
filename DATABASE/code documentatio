@@ -79,3 +79,41 @@ BEGIN
 END;
 /  
 
+--PROCEDURE UPDATE EQUIPMENT STATUS
+
+CREATE OR REPLACE PROCEDURE update_equipment_status(
+    p_equipment_id NUMBER,
+    p_status       VARCHAR2
+)
+AS
+BEGIN
+    UPDATE equipment
+    SET status = p_status
+    WHERE equipment_id = p_equipment_id;
+
+    IF SQL%FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Status updated successfully.');
+        DBMS_OUTPUT.PUT_LINE('Rows updated: ' || SQL%ROWCOUNT);
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('No equipment found for update.');
+    END IF;
+END;
+/
+
+## 2. FUNCTION
+
+--FUNCTION COUNT ACTIVE EQUIPMENT
+
+CREATE OR REPLACE FUNCTION count_active_equipment
+RETURN NUMBER
+AS
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count
+    FROM equipment
+    WHERE status = 'Active';
+
+    RETURN v_count;
+END;
+/
+
