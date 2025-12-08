@@ -1,0 +1,61 @@
+CREATE TABLE EQUIPMENT (
+    equipment_id    NUMBER PRIMARY KEY,
+    name            VARCHAR2(50),
+    type            VARCHAR2(30),
+    purchase_date   DATE,
+    status          VARCHAR2(20)
+);
+
+INSERT INTO EQUIPMENT VALUES (1, 'X-Ray Machine', 'Medical', DATE '2022-01-10', 'Active');
+INSERT INTO EQUIPMENT VALUES (2, 'ECG Monitor', 'Diagnostic', DATE '2021-06-20', 'Maintenance');
+INSERT INTO EQUIPMENT VALUES (3, 'Ventilator', 'Life Support', DATE '2020-03-15', 'Active');
+INSERT INTO EQUIPMENT VALUES (4, 'Ultrasound Scanner', 'Imaging', DATE '2019-09-12', 'Retired');
+INSERT INTO EQUIPMENT VALUES (5, 'Infusion Pump', 'Therapy', DATE '2023-04-05', 'Active');
+
+
+CREATE TABLE MAINTENANCE (
+    maintenance_id   NUMBER PRIMARY KEY,
+    equipment_id     NUMBER REFERENCES EQUIPMENT(equipment_id),
+    maintenance_date DATE,
+    next_due_date    DATE,
+    description      VARCHAR2(100)
+);
+
+INSERT INTO MAINTENANCE VALUES (101, 1, DATE '2023-01-10', DATE '2024-01-10', 'Annual X-ray calibration');
+INSERT INTO MAINTENANCE VALUES (102, 2, DATE '2023-05-05', DATE '2024-05-05', 'ECG software update');
+INSERT INTO MAINTENANCE VALUES (103, 3, DATE '2022-10-18', DATE '2023-10-18', 'Ventilator filter replacement');
+INSERT INTO MAINTENANCE VALUES (104, 5, DATE '2023-04-10', DATE '2023-10-10', 'Infusion pump maintenance');
+INSERT INTO MAINTENANCE VALUES (105, 1, DATE '2024-01-10', DATE '2025-01-10', 'X-ray mechanical inspection');
+
+
+
+CREATE TABLE OPERATOR (
+    operator_id       NUMBER PRIMARY KEY,
+    name              VARCHAR2(50),
+    assigned_equipment NUMBER REFERENCES EQUIPMENT(equipment_id)
+);
+
+INSERT INTO OPERATOR VALUES (11, 'John Doe', 1);
+INSERT INTO OPERATOR VALUES (12, 'Alice Uwase', 2);
+INSERT INTO OPERATOR VALUES (13, 'Eric Mugenzi', 3);
+INSERT INTO OPERATOR VALUES (14, 'Sarah Ndayisenga', NULL); -- not assigned
+INSERT INTO OPERATOR VALUES (15, 'Michael Rukundo', 5);
+
+
+CREATE TABLE REPAIR_HISTORY (
+    repair_id        NUMBER PRIMARY KEY,
+    equipment_id     NUMBER REFERENCES EQUIPMENT(equipment_id),
+    repair_date      DATE,
+    issue_reported   VARCHAR2(100),
+    action_taken     VARCHAR2(100)
+);
+
+INSERT INTO REPAIR_HISTORY VALUES (201, 1, DATE '2023-03-14', 'Power failure', 'Replaced power module');
+INSERT INTO REPAIR_HISTORY VALUES (202, 2, DATE '2022-11-20', 'ECG signal wavy', 'Replaced sensor cables');
+INSERT INTO REPAIR_HISTORY VALUES (203, 3, DATE '2023-08-01', 'Low airflow', 'Cleaned and replaced filters');
+INSERT INTO REPAIR_HISTORY VALUES (204, 4, DATE '2021-02-10', 'Screen malfunction', 'Installed new display unit');
+INSERT INTO REPAIR_HISTORY VALUES (205, 5, DATE '2023-07-15', 'Alarm malfunction', 'Updated firmware');
+
+-- procedure
+
+  
