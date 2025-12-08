@@ -1,0 +1,28 @@
+EQUIPMENT TABLE
+Column Name Data Type Description
+equipment_id NUMBER (PK) Unique equipment identifier
+name VARCHAR2(50) Equipment name type VARCHAR2(30)
+Type/category ofequipment
+purchase_date DATE Date of acquisition status VARCHAR2(20)
+Current status (Active, Maintenance, Retired).
+
+MAINTENANCE TABLE
+Column Name Data Type Description 
+maintenance_id NUMBER (PK) Unique 
+maintenance record equipment_id NUMBER (FK) References EQUIPMENT table
+maintenance_date DATE Date 
+maintenance was performed next_due_date DATE Next scheduled maintenance 
+description VARCHAR2(100) Maintenance activity summary
+
+OPERATOR TABLE
+Column Name Data Type Description 
+operator_id NUMBER (PK) Unique
+operator ID name VARCHAR2(50) 
+Operator full name assigned_equipment NUMBER (FK) Equipment currently assigned
+
+REPAIR_HISTORY TABLE
+Column Name Data Type Description
+repair_id NUMBER (PK) 
+Repair record ID equipment_id NUMBER (FK) References EQUIPMENT
+repair_date DATE Date of repair issue_reported VARCHAR2(100)
+Problem description action_taken VARCHAR2(100) Repair details.
