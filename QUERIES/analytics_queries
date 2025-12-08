@@ -1,3 +1,11 @@
+--ROW FUNCTIONS
+SELECT name,
+       UPPER(name) AS name_upper,
+       LENGTH(name) AS name_length
+FROM operator;
+
+--RANKING FUNCTIONS
+
 SELECT equipment_id,
        name,
        purchase_date,
@@ -5,3 +13,34 @@ SELECT equipment_id,
        RANK() OVER (ORDER BY purchase_date DESC) AS rank_val,
        DENSE_RANK() OVER (ORDER BY purchase_date DESC) AS dense_rank_val
 FROM equipment;
+
+--AGGREGATION FUNCTIONS
+
+1.Count active equipment
+
+SELECT COUNT(*) AS active_count
+FROM equipment
+WHERE status = 'Active';
+
+2. Total repairs per equipment
+
+SELECT equipment_id,
+       COUNT(*) AS repair_count
+FROM repair_history
+GROUP BY equipment_id;
+
+3. Average maintenance interval
+
+SELECT AVG(next_due_date - maintenance_date) AS avg_interval_days
+FROM maintenance;
+
+4.Combining AGGREGATION + RANKING
+
+SELECT equipment_id,
+       repair_count,
+       RANK() OVER (ORDER BY repair_count DESC) AS repair_rank
+FROM (
+    SELECT equipment_id, COUNT(*) AS repair_count
+    FROM repair_history
+    GROUP BY equipment_id
+);
