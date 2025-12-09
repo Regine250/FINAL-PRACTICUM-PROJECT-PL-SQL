@@ -91,7 +91,6 @@ In this stage, workflows and interactions between system entities (users, vehicl
 # Phase III: Logical Design ✔️
 
 This phase focused on converting the business model into a database model. Entity-relationship diagrams (ERD) were created to define tables, attributes, and relationships. Constraints and normalization were also addressed here to ensure data integrity.
-
 <img width="428" height="259" alt="MODEL" src="https://github.com/user-attachments/assets/41c26b8d-b8c7-421d-9d88-6998f2fb25e4" />
 
 # Phase IV: Database Creation ✔️
@@ -122,13 +121,10 @@ Audit logs recorded sensitive changes.
 TRIGGER
 <img width="550" height="370" alt="trigger-insert-holiday" src="https://github.com/user-attachments/assets/76f82ae9-845c-4102-8318-18d0a1ef044b" />
 
-
 AUDIT-LOG
-
 <img width="475" height="241" alt="trigger-insert-audit-log" src="https://github.com/user-attachments/assets/2fc18738-6113-466f-a378-b308632bd504" />
 
 package
-
 <img width="413" height="227" alt="package(mining)" src="https://github.com/user-attachments/assets/7bb961f0-e362-40dc-b084-e84bb351c232" />
 
 
