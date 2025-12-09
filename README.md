@@ -1,5 +1,12 @@
 # Mining Equipment Maintenance and Tracking System
 
+📅 Project Details
+Student Name: Regine Pacis Igihozo
+Student ID: 27703
+Lecturer: Eric Maniraguha
+Course Code & Name: INSY 8311 - Database Development with PL/SQL
+Academic Year: 2025-2026
+
 # 1. Project Overview
    
 The Mining Equipment Maintenance and Tracking System is designed to help mining companies efficiently manage their equipment lifecycle—from registration, daily usage tracking, to maintenance scheduling.
