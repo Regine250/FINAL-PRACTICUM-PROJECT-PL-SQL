@@ -1,7 +1,7 @@
 # Mining Equipment Maintenance and Tracking System
 
 # 📅 Project Details
-##Student Name: Regine Pacis Igihozo.
+#Student Name: Regine Pacis Igihozo.
 ##Student ID: 27703.
 ##Lecturer: Eric Maniraguha.
 ##Course Code & Name: INSY 8311 - Database Development with PL/SQL.
